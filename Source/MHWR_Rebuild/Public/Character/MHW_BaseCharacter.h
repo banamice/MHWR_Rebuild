@@ -1,28 +1,62 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MoveState.h"
+#include "Component/CombatComponent/MHW_ICombatComponent.h"
 #include "GameFramework/Character.h"
 #include "MHW_BaseCharacter.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
+class IMHW_IAnimInstance;
+enum class EMoveState : uint8;
+
 UCLASS()
-class MHWR_REBUILD_API AMHW_BaseCharacter : public ACharacter
+class MHWR_REBUILD_API AMHW_BaseCharacter : public ACharacter,public IMHW_ICombatComponent
 {
 	GENERATED_BODY()
-
+	
 public:
-	// Sets default values for this character's properties
 	AMHW_BaseCharacter();
-
+	UFUNCTION(BlueprintCallable, Category="MHW")
+	virtual UMHW_BaseCombatComponent* GetCombatComponent() override;
+	virtual void PossessedBy(AController* NewController) override;
+	virtual  void OnRep_Controller() override;
+	
+#pragma region //绑定给controller的回调，内部直接调用了combat组件内容
+	void Equip();
+	void UnEquip();
+#pragma endregion
+	
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	virtual void OnPlayerControllerChanged();
+	
+private:
+#pragma region  //Component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,meta=(AllowPrivateAccess="true"))
+	TObjectPtr<UMHW_BaseCombatComponent> CombatComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,meta=(AllowPrivateAccess="true"))
+	TObjectPtr<USpringArmComponent> SpringArm;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,meta=(AllowPrivateAccess="true"))
+	TObjectPtr<UCameraComponent> Camera;
+	
+#pragma endregion
+	
+private:
+	UPROPERTY(BlueprintReadWrite,Category="MHW",meta=(AllowPrivateAccess="true"))
+	EMoveState MoveState = EMoveState::Idle;
 
+
+#pragma region  //Getter  Setter
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	EMoveState GetMoveState() const
+	{
+		return MoveState;
+	}
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void SetMoveState(const EMoveState NewMoveState)
+	{
+		MoveState = NewMoveState;
+	}
+#pragma endregion
 };

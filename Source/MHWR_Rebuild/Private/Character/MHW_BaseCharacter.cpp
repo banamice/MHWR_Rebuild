@@ -1,32 +1,70 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Character/MHW_BaseCharacter.h"
 
+#include "Camera/CameraComponent.h"
+#include "Component/CombatComponent/MHW_BaseCombatComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Locomotion/MHW_BaseAnimInstance.h"
+#include "Locomotion/MHW_IAnimInstance.h"
 
-// Sets default values
+
 AMHW_BaseCharacter::AMHW_BaseCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-}
-
-// Called when the game starts or when spawned
-void AMHW_BaseCharacter::BeginPlay()
-{
-	Super::BeginPlay();
+	
+	CombatComponent = CreateDefaultSubobject<UMHW_BaseCombatComponent>(TEXT("CombatComponent"));
+	
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->SetupAttachment(GetMesh());
+	SpringArm->TargetArmLength = 250.f;
+	SpringArm->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	
 }
 
-// Called every frame
-void AMHW_BaseCharacter::Tick(float DeltaTime)
+UMHW_BaseCombatComponent* AMHW_BaseCharacter::GetCombatComponent()
 {
-	Super::Tick(DeltaTime);
+	return CombatComponent;
 }
 
-// Called to bind functionality to input
-void AMHW_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AMHW_BaseCharacter::PossessedBy(AController* NewController)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	Super::PossessedBy(NewController);
+	OnPlayerControllerChanged();
+}
+
+void AMHW_BaseCharacter::OnRep_Controller()
+{
+	Super::OnRep_Controller();
+	OnPlayerControllerChanged();
+}
+
+void AMHW_BaseCharacter::Equip()
+{
+	if (!CombatComponent) return;
+	CombatComponent->Equip();
+
+	if (IMHW_IAnimInstance* Instance =  Cast<IMHW_IAnimInstance>(GetMesh()->GetAnimInstance()))
+	{
+		Instance->SetCombatState(CombatComponent->GetCombatState());
+	}
+}
+
+void AMHW_BaseCharacter::UnEquip()
+{
+	CombatComponent->UnEquip();
+	if (IMHW_IAnimInstance* Instance = Cast<IMHW_IAnimInstance>(GetMesh()->GetAnimInstance()))
+	{
+		Instance->SetCombatState(ECombatState::UnEquipped);
+	}
+}
+
+void AMHW_BaseCharacter::OnPlayerControllerChanged()
+{
+	//有需要时完善	
 }
 
