@@ -18,14 +18,12 @@ class MHWR_REBUILD_API UMHW_BaseAnimInstance : public UAnimInstance,public IMHW_
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintCallable, Category="MHW")
-	virtual void SetMoveState(EMoveState InMoveState) override;
-	UFUNCTION(BlueprintCallable, Category="MHW")
-	virtual void SetCombatState(ECombatState InCombatState) override;
+	virtual void SetCombatState_Implementation(ECombatState InCombatState) override;
+	virtual void SetMoveState_Implementation(EMoveState InMoveState) override;
 
 private:
 	UPROPERTY(BlueprintReadWrite,Category="MHW",meta=(AllowPrivateAccess="true"))
 	EMoveState MoveState = EMoveState::Idle;
 	UPROPERTY(BlueprintReadWrite,Category="MHW",meta=(AllowPrivateAccess="true"))
-	ECombatState CombatState = ECombatState::UnEquipped;
+	ECombatState CombatState = ECombatState::ECS_UnEquipped;
 };

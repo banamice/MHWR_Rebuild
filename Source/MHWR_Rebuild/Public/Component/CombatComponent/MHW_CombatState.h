@@ -8,8 +8,24 @@
 UENUM(BlueprintType)
 enum class ECombatState : uint8
 {
-	UnEquipped,
-	Equipped,
-	Combing,
-	Stunning
+	ECS_None,
+	ECS_UnEquipped,
+	ECS_Equipped,
+	ECS_Combing,
+	ECS_Stunning,
+	ECS_Aiming,
+	
+	
+	ECS_Max
+};
+
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	EWT_None,
+	EWT_LongSword,
+	EWT_ChargeAxe,
+	
+	
+	EWT_Max
 };

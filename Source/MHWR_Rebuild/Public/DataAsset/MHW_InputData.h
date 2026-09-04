@@ -26,5 +26,11 @@ public:
 	TObjectPtr<UInputAction> EquipAction;
 	UPROPERTY(EditDefaultsOnly,Category="MHW")
 	TObjectPtr<UInputAction> UnEquipAction;
+	UPROPERTY(EditDefaultsOnly,Category="MHW")
+	TObjectPtr<UInputAction> LookAction;
+	UPROPERTY(EditDefaultsOnly,Category="MHW")
+	TObjectPtr<UInputAction> MoveAction;
+	UPROPERTY(EditDefaultsOnly,Category="MHW")
+	TObjectPtr<UInputAction> AimAction;
 	
 };

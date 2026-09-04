@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputActionValue.h"
 #include "GameFramework/PlayerController.h"
 #include "MHW_BasePlayerController.generated.h"
 
@@ -24,6 +25,8 @@ private:
 	
 protected:
 	virtual void BeginPlay() override;
+
+
 	virtual void SetupInputComponent() override;
 	
 	
@@ -40,6 +43,14 @@ private:
 	
 	
 #pragma region   //绑定回调
+	UFUNCTION()
+	void AimAction();
+	UFUNCTION()
+	void UnAimAction();
+	UFUNCTION()
+	void LookAction(const FInputActionValue& InputActionValue);
+	UFUNCTION()
+	void MoveAction(const FInputActionValue& InputActionValue);
 	UFUNCTION()
 	void EquipAction();
 	UFUNCTION()
