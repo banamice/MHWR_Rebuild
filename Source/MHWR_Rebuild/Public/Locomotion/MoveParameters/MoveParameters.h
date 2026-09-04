@@ -27,3 +27,23 @@ struct FMoveParameters
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bUseSeparateBrakingFriction = false;
 };
+
+USTRUCT(Blueprintable,BlueprintType)
+struct FDebugOption
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bDrawArrow = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bDrawText = true;
+};
+
+UENUM(BlueprintType,BlueprintType)
+enum class EMoveDirection : uint8
+{
+	EMD_Forward,
+	EMD_Backward,
+	EMD_Left,
+	EMD_Right
+};

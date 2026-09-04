@@ -7,6 +7,7 @@
 #include "Animation/AnimInstance.h"
 #include "Character/MoveState.h"
 #include "Component/CombatComponent/MHW_CombatState.h"
+#include "MoveParameters/MoveParameters.h"
 #include "MHW_BaseAnimInstance.generated.h"
 
 /**
@@ -26,4 +27,18 @@ private:
 	EMoveState MoveState = EMoveState::Idle;
 	UPROPERTY(BlueprintReadWrite,Category="MHW",meta=(AllowPrivateAccess="true"))
 	ECombatState CombatState = ECombatState::ECS_UnEquipped;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="MHW",meta=(AllowPrivateAccess="true"))
+	FDebugOption DebugOption;
+	UPROPERTY(BlueprintReadWrite,Category="MHW",meta=(AllowPrivateAccess="true"))
+	EMoveDirection VelocityDirectionEnumBaseRotation = EMoveDirection::EMD_Forward;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="MHW",meta=(AllowPrivateAccess="true"))
+	float MinRightDegree = 45.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="MHW",meta=(AllowPrivateAccess="true"))
+	float MaxRightDegree = 135.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="MHW",meta=(AllowPrivateAccess="true"))
+	float MinLeftDegree = -135.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="MHW",meta=(AllowPrivateAccess="true"))
+	float MaxLeftDegree = -45.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="MHW",meta=(AllowPrivateAccess="true"))
+	float DeadZone = 20.f;
 };

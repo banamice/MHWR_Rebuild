@@ -19,4 +19,5 @@ class MHWR_REBUILD_API UMHW_MoveParameters : public UDataAsset
 public:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="MHW")
 	TMap<EMoveState,FMoveParameters> MoveParametersMap;
+	
 };

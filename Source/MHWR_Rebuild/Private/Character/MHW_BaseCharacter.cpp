@@ -54,7 +54,6 @@ void AMHW_BaseCharacter::OnRep_Controller()
 void AMHW_BaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	Cast<UCharacterMovementComponent>(GetMovementComponent())->bOrientRotationToMovement = true;
 }
 
 void AMHW_BaseCharacter::Equip()
